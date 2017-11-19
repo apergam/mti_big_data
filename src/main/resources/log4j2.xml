@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration monitorInterval="60">
+	<Properties>
+		<Property name="filename">logs</Property>
+	</Properties>
+	<Appenders>
+		<Console name="STDOUT" target="SYSTEM_OUT">
+			<PatternLayout
+				pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n" />
+		</Console>
+		<File name="LOGFILE" fileName="${filename}/demonio.log">
+			<PatternLayout
+				pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n" />
+		</File>
+		<File name="TWEETSLOG" fileName="${filename}/tweets.log">
+			<PatternLayout
+				pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n" />
+		</File>
+		<File name="DBLOG" fileName="${filename}/db.log">
+			<PatternLayout
+				pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n" />
+		</File>
+	</Appenders>
+	<Loggers>
+		<Logger name="com.mti.daemon"
+			level="debug">
+			<AppenderRef ref="LOGFILE" level="debug" />
+		</Logger>
+		<Logger name="com.mti.twitter"
+			level="debug">
+			<AppenderRef ref="TWEETSLOG" level="debug" />
+		</Logger>
+		<Logger name="com.mti.db"
+			level="debug">
+			<AppenderRef ref="DBLOG" level="debug" />
+		</Logger>
+		<Root level="debug">
+			<AppenderRef ref="STDOUT" />
+		</Root>
+	</Loggers>
+</Configuration>

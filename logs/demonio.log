@@ -1,0 +1,27 @@
+[INFO ] 2017-11-05 17:17:32.308 [main] daemon - Hello, World!
+[DEBUG] 2017-11-05 17:17:32.310 [main] daemon - This is a debug message
+[INFO ] 2017-11-05 17:17:32.310 [main] daemon - This is an info message
+[WARN ] 2017-11-05 17:17:32.310 [main] daemon - This is a warn message
+[ERROR] 2017-11-05 17:17:32.310 [main] daemon - This is an error message
+[FATAL] 2017-11-05 17:17:32.310 [main] daemon - This is a fatal message
+[INFO ] 2017-11-05 17:20:29.618 [main] TweetsLoadCall - Hello, World!
+[DEBUG] 2017-11-05 17:20:29.620 [main] TweetsLoadCall - This is a debug message
+[INFO ] 2017-11-05 17:20:29.620 [main] TweetsLoadCall - This is an info message
+[WARN ] 2017-11-05 17:20:29.620 [main] TweetsLoadCall - This is a warn message
+[ERROR] 2017-11-05 17:20:29.621 [main] TweetsLoadCall - This is an error message
+[FATAL] 2017-11-05 17:20:29.621 [main] TweetsLoadCall - This is a fatal message
+[FATAL] 2017-11-05 18:20:27.022 [main] Proxy - Missing parameter, the activity parameter has not be found
+[FATAL] 2017-11-05 18:20:57.607 [main] Proxy - Invalid activity, the provided parameter is not a valid action
+[FATAL] 2017-11-05 18:21:51.391 [main] Proxy - Invalid activity, the provided parameter <actividad>is not a valid action
+[DEBUG] 2017-11-05 18:22:55.935 [main] Proxy - Activity to be executed: LOAD
+[ERROR] 2017-11-05 18:22:55.937 [main] Proxy - Error executing the activity LOAD, TweetsLoadCall
+[DEBUG] 2017-11-05 18:31:38.641 [main] Proxy - Activity to be executed: LOAD
+[DEBUG] 2017-11-05 18:36:22.325 [main] Proxy - Activity to be executed: LOAD
+[DEBUG] 2017-11-05 18:42:06.872 [main] Proxy - Activity to be executed: LOAD
+[ERROR] 2017-11-05 18:42:06.874 [main] Proxy - Error executing the activity LOAD, TweetsLoadCall
+[DEBUG] 2017-11-05 18:42:44.463 [main] Proxy - Activity to be executed: LOAD
+[INFO ] 2017-11-05 18:42:44.466 [main] TweetsLoadCall - Executing Tweets Load
+[DEBUG] 2017-11-05 18:44:59.305 [main] Proxy - Activity to be executed: LOAD
+[INFO ] 2017-11-05 18:44:59.307 [main] TweetsLoadCall - Executing Tweets Load
+[DEBUG] 2017-11-05 19:42:03.904 [main] Proxy - Activity to be executed: LOAD
+[INFO ] 2017-11-05 19:42:03.907 [main] TweetsLoadCall - Executing Tweets LOAD
