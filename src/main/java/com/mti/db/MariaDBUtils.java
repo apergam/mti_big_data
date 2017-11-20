@@ -42,7 +42,7 @@ public class MariaDBUtils {
 	 * @param cuenta
 	 * @return
 	 */
-	private int updateMaxId(Cuenta cuenta) {
+	public int updateMaxId(Cuenta cuenta) {
 
 		int resultadoUpdate = -1;
 		
@@ -112,7 +112,7 @@ public class MariaDBUtils {
 	 * Get all the records from cuentas table
 	 * @return
 	 */
-	private ArrayList<Cuenta> getCuentas() {
+	public ArrayList<Cuenta> getCuentas() {
 
 		ArrayList <Cuenta> cuentas =new ArrayList<Cuenta>();
 		ResultSet resultSet = null; 
