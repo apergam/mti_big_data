@@ -14,6 +14,27 @@ import com.mti.db.*;
 public class UserTimelineLatestTweet {
 	private static final Logger logger = LogManager.getLogger("com.mti.twitter");
 	
+	HashMap<String, String> accountsTweetId = new HashMap<String, String>();
+
+	public UserTimelineLatestTweet() {
+		accountsTweetId = new HashMap<String, String>();
+		MariaDBUtils maria = new MariaDBUtils();
+		
+		ArrayList<Cuenta> twitterAccounts = maria.getCuentas();
+		
+		for (Cuenta twitterAccount : twitterAccounts) {
+			accountsTweetId.put(twitterAccount.getIdCuenta(), twitterAccount.getMaxId());
+		}
+	}
+	
+	public HashMap<String, String> getAccountsTweetId() {
+		return accountsTweetId;
+	}
+
+	public void setAccountsTweetId(HashMap<String, String> accountsTweetId) {
+		this.accountsTweetId = accountsTweetId;
+	}
+
 	/**
      * Update latest tweet Id for each official account.
      */
@@ -69,6 +90,7 @@ public class UserTimelineLatestTweet {
 	public List<Status> getNewTweets(String twitterAccount, String tweetIDFromDB){
 		List<Status> newTweets = new ArrayList<Status>();
 		String tweetID = null;
+		String latestTweetID = null;
 		
         try {
         	Twitter twitter = new TwitterFactory().getInstance();
@@ -77,9 +99,13 @@ public class UserTimelineLatestTweet {
             do {
                 result = twitter.search(query);
                 List<Status> tweets = result.getTweets();
+                
+                latestTweetID = Long.toString((tweets.get(0).getId()));
+                accountsTweetId.put(twitterAccount, latestTweetID);
+                
                 for (Status tweet : tweets) {
                 	//tweetID = new Long(tweet.getId());
-                	tweetID = "" + tweet.getId();
+                	tweetID = Long.toString(tweet.getId());
                     logger.debug("Tweet ID: "+ tweetID.toString() + "@" + tweet.getUser().getScreenName() + " - " + tweet.getText());
                     if(tweetID.compareTo(tweetIDFromDB) == 0) {
                     	break;
@@ -129,6 +155,7 @@ public class UserTimelineLatestTweet {
      * Get latest tweet ID for the twitter account specified.
      */
 	public String getLatestTweetID(String twitterAccount) {
+		/*
 		String outTweetID = "";
 		
 		if (twitterAccount != null) {
@@ -153,8 +180,8 @@ public class UserTimelineLatestTweet {
         } else {
         	logger.error("java twitter4j.examples.search.SearchTweets [query]");
         }
-		
-		return outTweetID;
+		*/
+		return accountsTweetId.get(twitterAccount);
 	}
     
 	/**
