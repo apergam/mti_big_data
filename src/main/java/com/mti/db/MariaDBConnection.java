@@ -101,11 +101,7 @@ public class MariaDBConnection {
 			input = MariaDBConnection.class.getClassLoader().getResourceAsStream("config.properties");
 
 			dbProperties.load(input);
-
-			logger.debug("Database: " + dbProperties.getProperty("database"));
-			logger.debug("DB user: " + dbProperties.getProperty("dbuser"));
-			logger.debug("DB password: " + dbProperties.getProperty("dbpassword"));
-
+			
 		} catch (FileNotFoundException e) {
 			logger.error("File config.properties was not found. " + e.getMessage());
 			e.printStackTrace();

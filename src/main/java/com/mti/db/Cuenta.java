@@ -1,5 +1,10 @@
 package com.mti.db;
 
+import java.util.Arrays;
+import java.util.List;
+
+import twitter4j.Status;
+
 public class Cuenta {
 	
 	private String idCuenta;
@@ -8,12 +13,19 @@ public class Cuenta {
 	private String latitud;
 	private String url;
 	private long maxId;
+	private List <Status> tweets;
 	
 	
 	public Cuenta() {
 		super();
 	}
 
+	public Cuenta(String idCuenta, String nombre) {
+		super();
+		this.idCuenta = idCuenta;
+		this.nombre = nombre;
+	}
+	
 	public Cuenta(String idCuenta, String nombre, String longitud, String latitud, String url, int maxId) {
 		super();
 		this.idCuenta = idCuenta;
@@ -24,15 +36,17 @@ public class Cuenta {
 		this.maxId = maxId;
 	}
 
-	public Cuenta(String idCuenta, String nombre) {
+	public Cuenta(String idCuenta, String nombre, String longitud, String latitud, String url, int maxId, List <Status> tweets) {
 		super();
 		this.idCuenta = idCuenta;
 		this.nombre = nombre;
+		this.longitud = longitud;
+		this.latitud = latitud;
+		this.url = url;
+		this.maxId = maxId;
+		this.tweets = tweets;
 	}
 
-	//hacer metodo del set max id
-	
-	
 	public String getIdCuenta() {
 		return idCuenta;
 	}
@@ -80,6 +94,16 @@ public class Cuenta {
 	public void setMaxId(long maxId) {
 		this.maxId = maxId;
 	}
+	
+	
+
+	public List<Status> getTweets() {
+		return tweets;
+	}
+
+	public void setTweets(List<Status> tweets) {
+		this.tweets = tweets;
+	}
 
 	public String toString() {
 		StringBuffer salida = new StringBuffer("");
@@ -89,7 +113,9 @@ public class Cuenta {
 		.append(", latitud: ").append(getLatitud())
 		.append(", longitud: ").append(getLongitud())
 		.append(", url: ").append(getUrl())
-		.append(", maxId: ").append(getMaxId());
+		.append(", maxId: ").append(getMaxId())
+		.append(", tweets: ").append(getTweets())
+		;
 
 		return salida.toString();
 	}
