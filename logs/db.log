@@ -141,3 +141,20 @@ Query - conn:25(M)  - "UPDATE CUENTAS SET MAX_ID = ? WHERE ID_CUENTA = ?"
 [DEBUG] 2017-11-19 12:32:24.577 [main] db - Database: mti
 [DEBUG] 2017-11-19 12:32:24.577 [main] db - DB user: mti_app
 [DEBUG] 2017-11-19 12:32:24.577 [main] db - DB password: mti_app
+[DEBUG] 2017-11-22 23:42:00.097 [main] db - Actualizando cuenta CUAAD_UdeG, resultado: 1
+[DEBUG] 2017-11-22 23:42:00.103 [main] db - Actualizando cuenta CUAltos, resultado: 1
+[DEBUG] 2017-11-22 23:42:00.106 [main] db - Actualizando cuenta cucba_udg, resultado: 1
+[DEBUG] 2017-11-22 23:42:00.110 [main] db - Actualizando cuenta CUCEA_OFICIAL, resultado: 1
+[DEBUG] 2017-11-22 23:42:00.113 [main] db - Actualizando cuenta cuci_oficial, resultado: 1
+[DEBUG] 2017-11-22 23:42:00.116 [main] db - Actualizando cuenta CUCosta, resultado: 1
+[DEBUG] 2017-11-22 23:42:00.121 [main] db - Actualizando cuenta CUCSur, resultado: 1
+[DEBUG] 2017-11-22 23:42:00.124 [main] db - Actualizando cuenta CULagos_UdeG, resultado: 1
+[DEBUG] 2017-11-22 23:42:00.128 [main] db - Actualizando cuenta cunorte_udg, resultado: 1
+[DEBUG] 2017-11-22 23:42:00.131 [main] db - Actualizando cuenta CUSur_UdeG, resultado: 1
+[DEBUG] 2017-11-22 23:42:00.134 [main] db - Actualizando cuenta Cutonala_udg, resultado: 1
+[DEBUG] 2017-11-22 23:42:00.136 [main] db - Actualizando cuenta cuvallesudg, resultado: 1
+[DEBUG] 2017-11-22 23:42:00.159 [main] db - Actualizando cuenta DifundeCUCSH, resultado: 1
+[DEBUG] 2017-11-22 23:42:00.162 [main] db - Actualizando cuenta OficialCUCS, resultado: 1
+[DEBUG] 2017-11-22 23:42:00.166 [main] db - Actualizando cuenta Trafico_ZMG, resultado: 1
+[DEBUG] 2017-11-22 23:42:00.169 [main] db - Actualizando cuenta udgcucei, resultado: 1
+[DEBUG] 2017-11-22 23:42:00.174 [main] db - Actualizando cuenta Trafico_ZMG, resultado: 1

@@ -20,7 +20,7 @@ public class MariaDBUtils {
 		for (Cuenta cuenta : cuentas) {
 			//logger.debug("Cuenta: " + cuenta.toString());
 			System.out.println("Cuenta: " + cuenta.toString());
-			cuenta.setMaxId(931931799739142150L);
+			cuenta.setMaxId("931931799739142150");
 			System.out.println("Cuenta: " + cuenta.toString());
 			maria.updateMaxId(cuenta);
 		}
@@ -29,7 +29,7 @@ public class MariaDBUtils {
 		System.out.println("cuentaZMG: " + cuentaZMG);
 		
 		System.out.println("Cambiando el max id a 100");
-		cuentaZMG.setMaxId(100);
+		cuentaZMG.setMaxId("100");
 		maria.updateMaxId(cuentaZMG);
 		System.out.println("cuentaZMG: " + cuentaZMG);
 
@@ -47,6 +47,7 @@ public class MariaDBUtils {
 		try {
 			MariaDBConnection connection = new MariaDBConnection();
 			resultadoUpdate = connection.updateCuenta(cuenta);
+			logger.debug("Actualizando cuenta " + cuenta.getIdCuenta() + ", resultado: " + resultadoUpdate);
 		} catch (ClassNotFoundException e) {
 			logger.error("Error getting class for DB " + e.getMessage());
 			e.printStackTrace();
@@ -65,6 +66,8 @@ public class MariaDBUtils {
 	 */
 	public ArrayList<Cuenta> getCuentas() {
 
+		logger.info("Getting cuentas from DB");
+		
 		ArrayList <Cuenta> cuentas =new ArrayList<Cuenta>();
 		ResultSet resultSet = null; 
 		try {
@@ -81,7 +84,7 @@ public class MariaDBUtils {
 				cuentaTemporal.setLatitud(resultSet.getString("latitud"));
 				cuentaTemporal.setLongitud(resultSet.getString("longitud"));
 				cuentaTemporal.setUrl(resultSet.getString("url"));
-				cuentaTemporal.setMaxId(resultSet.getLong("max_id"));
+				cuentaTemporal.setMaxId(resultSet.getString("max_id"));
 
 				cuentas.add(cuentaTemporal);
 			}

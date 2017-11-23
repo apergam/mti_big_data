@@ -47,7 +47,7 @@ public class HBaseTest {
 
     /**
      * Create a table
-     */
+     
     public static void creatTable(String tableName, String[] familys)
             throws Exception {
         Admin admin = connection.getAdmin();
@@ -62,10 +62,10 @@ public class HBaseTest {
             System.out.println("create table " + tableName + " ok.");
         }
     }
- 
+ */
     /**
      * Delete a table
-     */
+    
     public static void deleteTable(String tableName) throws Exception {
         try {
             Admin admin = connection.getAdmin();
@@ -78,7 +78,7 @@ public class HBaseTest {
             e.printStackTrace();
         }
     }
- 
+  */
     /**
      * Put (or insert) a row
      */
@@ -151,7 +151,7 @@ public class HBaseTest {
         try {
             String tablename = "scores";
             String[] familys = { "grade", "course" };
-            HBaseTest.creatTable(tablename, familys);
+            //HBaseTest.creatTable(tablename, familys);
  
             // add record zkb
             HBaseTest.addRecord(tablename, "zkb", "grade", "", "5");

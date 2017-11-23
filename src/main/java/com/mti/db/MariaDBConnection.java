@@ -88,7 +88,7 @@ public class MariaDBConnection {
    public int updateCuenta(Cuenta cuenta) throws SQLException {
 	   
 	   preparedStatement = connection.prepareStatement("UPDATE CUENTAS SET MAX_ID = ? WHERE ID_CUENTA = ?");
-	   preparedStatement.setLong(1, cuenta.getMaxId());
+	   preparedStatement.setString(1, cuenta.getMaxId());
 	   preparedStatement.setString(2, cuenta.getIdCuenta());
 	   
 	   return preparedStatement.executeUpdate();

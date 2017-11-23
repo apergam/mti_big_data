@@ -12,6 +12,8 @@ import org.apache.hadoop.hbase.filter.*;
 import org.apache.hadoop.hbase.filter.CompareFilter.CompareOp;
 import org.apache.hadoop.hbase.filter.FilterList.Operator;
 import org.apache.hadoop.hbase.util.Bytes;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.google.protobuf.ServiceException;
 
@@ -22,7 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class HBaseUtils {
-    
+	private static final Logger logger = LogManager.getLogger("com.mti.db");
 	Configuration config = null;    
 	private final static byte[] cellData = Bytes.toBytes("cell_data");
     //Drop tables if this value is set true.
@@ -38,13 +40,19 @@ public class HBaseUtils {
     private final byte[] row1 = Bytes.toBytes("Row1");
     private final byte[] row2 = Bytes.toBytes("Row2");
     private final byte[] row3 = Bytes.toBytes("Row3");
+    private final byte[] idQualifier = Bytes.toBytes("id");
+    private final byte[] textQualifier = Bytes.toBytes("text");
+    private final byte[] userQualifier = Bytes.toBytes("user");
+    private final byte[] timestampQualifier = Bytes.toBytes("created_at");
+    private final byte[] Qualifier = Bytes.toBytes("");
     private final byte[] tweetDataQualifier = Bytes.toBytes("td");
+    
+    
+    
     private final byte[] qualifier1 = Bytes.toBytes("Qualifier1");
     private final byte[] qualifier2 = Bytes.toBytes("Qualifier2");
     private final byte[] qualifier3 = Bytes.toBytes("Qualifier3");
 
-    private void 
-    
     private void createTable(Admin admin) throws IOException {
         HTableDescriptor desc = new HTableDescriptor(table1);
         desc.addFamily(new HColumnDescriptor(family1));
@@ -156,8 +164,7 @@ public class HBaseUtils {
         System.out.println("Done. ");
     }
     
-    public void putTweetsCuenta(Configuration config, Cuenta cuenta, List<Status> status ) throws IOException {
-        System.out.println("\n*** PUT example ~inserting \"cell-data\" into Family1:Qualifier1 of Table1 ~ ***");
+    public void putTweetsCuenta(Configuration config, Cuenta cuenta, List<Status> tweets ) throws IOException {
         
         try (Connection connection = ConnectionFactory.createConnection(config)) {
 
@@ -166,10 +173,23 @@ public class HBaseUtils {
             
             byte[] rowKey = Bytes.toBytes("0");
             
-            for (Status tweet : status) {
+            for (Status tweet : tweets) {
 				rowKey = Bytes.toBytes(tweet.getId() + "#" + tweet.getCreatedAt());
+				
+				logger.debug("PUT inserting rowKey: " + rowKey + ", fc: " + tweetDataColumnFamily 
+						+ ", idQualifier: " + tweetDataQualifier + ", value: " + tweet.getId()
+						+ ", textQualifier: " + tweetDataQualifier + ", value: " + tweet.getText()
+						+ ", userQualifier: " + tweetDataQualifier + ", value: " + tweet.getUser()
+						+ ", timestampQualifier: " + tweetDataQualifier + ", value: " + tweet.getCreatedAt()
+						
+						);
+				
 				p = new Put(rowKey);
-	            p.addImmutable(tweetDataColumnFamily.getBytes(), tweetDataQualifier, tweetDataQualifier.toString().getBytes());
+				
+	            p.addImmutable(tweetDataColumnFamily.getBytes(), idQualifier, Long.toString(tweet.getId()).getBytes());
+	            p.addImmutable(tweetDataColumnFamily.getBytes(), textQualifier, tweet.getText().getBytes());
+	            p.addImmutable(tweetDataColumnFamily.getBytes(), userQualifier, tweet.getUser().getName().getBytes());
+	            p.addImmutable(tweetDataColumnFamily.getBytes(), timestampQualifier, tweet.getCreatedAt().toString().getBytes());
 
 	            table.put(p);
 			}

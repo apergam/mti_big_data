@@ -27,13 +27,23 @@ public class TweetsLoadCall implements TweeterActivity {
 		logger.info("Executing Tweets LOAD");
 		
 		MariaDBUtils maria = new MariaDBUtils();
-		long maxId = 0;
+		String maxId = "";
 
-		ArrayList<Cuenta> cuentas = maria.getCuentas();
 		List<Status> tweets = new ArrayList<Status>();
 		HBaseUtils hBaseUtils = new HBaseUtils();
+		
 		UserTimelineLatestTweet userTimelineLatestTweet = new UserTimelineLatestTweet();
 		
+		Configuration config = null;
+		try {
+			config = getHBaseConfiguration();
+		} catch (IOException | ServiceException e) {
+			logger.error("Error getting HBase configuration " + e.getMessage());
+			e.printStackTrace();
+		}
+
+		
+		ArrayList<Cuenta> cuentas = maria.getCuentas();
 		for (Cuenta cuenta : cuentas) {
 			tweets = userTimelineLatestTweet.getNewTweets(cuenta.getIdCuenta(), cuenta.getMaxId());
 			
@@ -43,26 +53,33 @@ public class TweetsLoadCall implements TweeterActivity {
 			maxId = userTimelineLatestTweet.getLatestTweetID(cuenta.getIdCuenta());
 			cuenta.setMaxId(maxId);
 			maria.updateMaxId(cuenta);
-			hBaseUtils.putTweetsCuenta(config, cuenta, status);
+			
+			try {
+				hBaseUtils.putTweetsCuenta(config, cuenta, tweets);
+			} catch (IOException e) {
+				logger.error("Error inserting tweets in HBase " + e.getMessage());
+				e.printStackTrace();
+			}
 		}
 	}
 	
-	private void insertTweetsToHBase() throws IOException, ServiceException {
-        Configuration config = HBaseConfiguration.create();
+	private Configuration getHBaseConfiguration() throws IOException, ServiceException {
+        Configuration config = null;
+        String path = "";
 
-        String path = this.getClass().getClassLoader().getResource("hbase-site.xml").getPath();
+        //try {
+        	config = HBaseConfiguration.create();
+            path = this.getClass().getClassLoader().getResource("hbase-site.xml").getPath();
 
-        config.addResource(new Path(path));
-
-        try {
+            config.addResource(new Path(path));
+            
             HBaseAdmin.checkHBaseAvailable(config);
+            /*
         } catch (MasterNotRunningException e) {
             System.out.println("HBase is not running." + e.getMessage());
             logger.error("HBase is not running." + e.getMessage());
-            return;
         }
-
-        HBaseUtils HBaseClientOperations = new HBaseUtils();
-        HBaseClientOperations.run(config);
+        */
+		return config;
     }
 }

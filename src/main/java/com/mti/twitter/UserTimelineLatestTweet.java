@@ -23,13 +23,13 @@ public class UserTimelineLatestTweet {
 		MariaDBUtils maria = new MariaDBUtils();
 		
 		ArrayList<Cuenta> twitterAccounts = maria.getCuentas();
-		long tweetID;
+		String tweetID;
 
 		for (Cuenta twitterAccount : twitterAccounts) {
 			int success;
 			tweetID = getLatestTweetID(twitterAccount.getIdCuenta());
 			//logger.debug("Cuenta: " + cuenta.toString());
-			System.out.println("LatestTweetID from getLatestTweetID : " + Long.toString(tweetID));
+			System.out.println("LatestTweetID from getLatestTweetID : " + tweetID);
 			twitterAccount.setMaxId(tweetID);
 			System.out.println("Cuenta: " + twitterAccount.toString());
 			success = maria.updateMaxId(twitterAccount);
@@ -66,9 +66,9 @@ public class UserTimelineLatestTweet {
 	/**
      * Get new tweets for the twitter account specified. The tweets are going to be from tweetIDFromDB to latest tweet.
      */
-	public List<Status> getNewTweets(String twitterAccount, Long tweetIDFromDB){
+	public List<Status> getNewTweets(String twitterAccount, String tweetIDFromDB){
 		List<Status> newTweets = new ArrayList<Status>();
-		Long tweetID = null;
+		String tweetID = null;
 		
         try {
         	Twitter twitter = new TwitterFactory().getInstance();
@@ -78,7 +78,8 @@ public class UserTimelineLatestTweet {
                 result = twitter.search(query);
                 List<Status> tweets = result.getTweets();
                 for (Status tweet : tweets) {
-                	tweetID = new Long(tweet.getId());
+                	//tweetID = new Long(tweet.getId());
+                	tweetID = "" + tweet.getId();
                     logger.debug("Tweet ID: "+ tweetID.toString() + "@" + tweet.getUser().getScreenName() + " - " + tweet.getText());
                     if(tweetID.compareTo(tweetIDFromDB) == 0) {
                     	break;
@@ -102,9 +103,9 @@ public class UserTimelineLatestTweet {
 		List<Status> tmpnewTweets = new ArrayList<Status>();
 		
 		for (Cuenta twitterAccount : twitterAccounts) {
-			if(twitterAccount.getMaxId() != 0) {
+			if(twitterAccount.getMaxId() != "") {
 				// It isn't the first time for retrieving tweets
-				Long tmpID = new Long(twitterAccount.getMaxId());
+				String tmpID = twitterAccount.getMaxId();
 				tmpnewTweets = getNewTweets(twitterAccount.getIdCuenta(), tmpID);
 				for (Status tweet : tmpnewTweets) {
                     logger.debug("getNewTweets(ArrayList<Cuenta> twitterAccounts)" + "@" + tweet.getUser().getScreenName() + " - " + tweet.getText());
@@ -127,8 +128,8 @@ public class UserTimelineLatestTweet {
 	/**
      * Get latest tweet ID for the twitter account specified.
      */
-	public long getLatestTweetID(String twitterAccount) {
-		long outTweetID = 0;
+	public String getLatestTweetID(String twitterAccount) {
+		String outTweetID = "";
 		
 		if (twitterAccount != null) {
 	        try {
@@ -137,15 +138,13 @@ public class UserTimelineLatestTweet {
 				User user = twitter.verifyCredentials();
 				
 				Paging paging = new Paging(1,1);
-				List<Status> statuses = twitter.getHomeTimeline(paging);
-	            System.out.println("Showing @" + user.getScreenName() + "'s home timeline.");
-            	//logger.debug("Showing @" + user.getScreenName() + "'s home timeline." "@" + tweet.getUser().getScreenName() + " - " + tweet.getText());
+				List<Status> statuses = twitter.getUserTimeline(twitterAccount, paging);
+            	
 	            for (Status status : statuses) {
-	                System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
-	                outTweetID = status.getId();
+	                //System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
+	                outTweetID = Long.toString(status.getId());
+	                logger.debug("Last tweet from @" + status.getUser().getScreenName() + " : " + outTweetID);
 	            }
-				
-			
 	        } catch (TwitterException te) {
 	            te.printStackTrace();
 	            logger.error("Failed to search tweets: " + te.getMessage());

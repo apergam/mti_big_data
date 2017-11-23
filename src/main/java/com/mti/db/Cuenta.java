@@ -12,7 +12,7 @@ public class Cuenta {
 	private String longitud;
 	private String latitud;
 	private String url;
-	private long maxId;
+	private String maxId;
 	private List <Status> tweets;
 	
 	
@@ -26,7 +26,7 @@ public class Cuenta {
 		this.nombre = nombre;
 	}
 	
-	public Cuenta(String idCuenta, String nombre, String longitud, String latitud, String url, int maxId) {
+	public Cuenta(String idCuenta, String nombre, String longitud, String latitud, String url, String maxId) {
 		super();
 		this.idCuenta = idCuenta;
 		this.nombre = nombre;
@@ -36,7 +36,7 @@ public class Cuenta {
 		this.maxId = maxId;
 	}
 
-	public Cuenta(String idCuenta, String nombre, String longitud, String latitud, String url, int maxId, List <Status> tweets) {
+	public Cuenta(String idCuenta, String nombre, String longitud, String latitud, String url, String maxId, List <Status> tweets) {
 		super();
 		this.idCuenta = idCuenta;
 		this.nombre = nombre;
@@ -87,11 +87,11 @@ public class Cuenta {
 		this.url = url;
 	}
 
-	public long getMaxId() {
+	public String getMaxId() {
 		return maxId;
 	}
 
-	public void setMaxId(long maxId) {
+	public void setMaxId(String maxId) {
 		this.maxId = maxId;
 	}
 	
