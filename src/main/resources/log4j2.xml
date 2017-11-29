@@ -8,18 +8,38 @@
 			<PatternLayout
 				pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n" />
 		</Console>
-		<File name="LOGFILE" fileName="${filename}/demonio.log">
-			<PatternLayout
-				pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n" />
-		</File>
-		<File name="TWEETSLOG" fileName="${filename}/tweets.log">
-			<PatternLayout
-				pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n" />
-		</File>
-		<File name="DBLOG" fileName="${filename}/db.log">
-			<PatternLayout
-				pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n" />
-		</File>
+		
+		
+		<RollingFile name="LOGFILE" fileName="${filename}/demonio.log"
+			filePattern="${filename}/demonio_%d{yyyy-MM-dd}.log">
+			<PatternLayout>
+			<pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n</pattern>
+			</PatternLayout>
+			<Policies>
+			<TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+			</Policies>
+		</RollingFile>
+
+		<RollingFile name="TWEETSLOG" fileName="${filename}/tweets.log"
+			filePattern="${filename}/tweets_%d{yyyy-MM-dd}.log">
+			<PatternLayout>
+			<pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n</pattern>
+			</PatternLayout>
+			<Policies>
+			<TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+			</Policies>
+		</RollingFile>
+		
+		<RollingFile name="DBLOG" fileName="${filename}/db.log"
+			filePattern="${filename}/db_%d{yyyy-MM-dd}.log">
+			<PatternLayout>
+			<pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n</pattern>
+			</PatternLayout>
+			<Policies>
+			<TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+			</Policies>
+		</RollingFile>
+
 	</Appenders>
 	<Loggers>
 		<Logger name="com.mti.daemon"

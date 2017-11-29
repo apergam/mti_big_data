@@ -5,11 +5,11 @@ com\mti\db\MariaDBUtils.class
 com\mti\daemon\TweetsLoadCall.class
 com\mti\daemon\TweeterActivity.class
 com\mti\twitter\SearchTweets.class
+com\mti\db\ConstantUtils.class
 com\mti\daemon\TweetsReportingCall.class
 com\mti\daemon\App.class
 com\mti\db\MariaDBConnection.class
 com\mti\daemon\Proxy.class
 com\mti\daemon\TweetsProcessingCall.class
 com\mti\db\HbaseClientExample.class
-com\mti\db\HBaseTest.class
 com\mti\db\HBaseUtils.class

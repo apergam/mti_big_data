@@ -70,10 +70,11 @@ public class UserTimelineLatestTweet {
             QueryResult result;
             do {
                 result = twitter.search(query);
+                
                 List<Status> tweets = result.getTweets();
                 for (Status tweet : tweets) {
                 	tweetID = new Long(tweet.getId());
-                    logger.debug("Tweet ID: "+ tweetID.toString() + "@" + tweet.getUser().getScreenName() + " - " + tweet.getText());
+                	logger.debug(twitterAccount + ", Tweet ID: "+ tweetID.toString() + " @" + tweet.getUser().getScreenName());
                     newTweets.add(tweet);
                 }
             } while ((query = result.nextQuery()) != null);
@@ -88,32 +89,38 @@ public class UserTimelineLatestTweet {
      * Get new tweets for the twitter account specified. The tweets are going to be from tweetIDFromDB to latest tweet.
      */
 	public List<Status> getNewTweets(String twitterAccount, String tweetIDFromDB){
+		logger.debug("getNewTweets (string, string) method [" + twitterAccount + "] account");
 		List<Status> newTweets = new ArrayList<Status>();
 		String tweetID = null;
-		String latestTweetID = null;
+		//String latestTweetID = null;
 		
         try {
         	Twitter twitter = new TwitterFactory().getInstance();
             Query query = new Query(twitterAccount);
             QueryResult result;
-            do {
+            //do {
                 result = twitter.search(query);
+                
+                logger.debug("getNewTweets. result.getCount(): " + result.getCount());
+                
                 List<Status> tweets = result.getTweets();
                 
-                latestTweetID = Long.toString((tweets.get(0).getId()));
-                accountsTweetId.put(twitterAccount, latestTweetID);
+                if(!tweets.isEmpty()) {
+                	logger.debug("getNewTweets DEBUG " + twitterAccount + "account, tweets.size(): " + tweets.size());
+                    accountsTweetId.put(twitterAccount, Long.toString((tweets.get(0). getId())));	
+                }
                 
                 for (Status tweet : tweets) {
                 	//tweetID = new Long(tweet.getId());
                 	tweetID = Long.toString(tweet.getId());
-                    logger.debug("Tweet ID: "+ tweetID.toString() + "@" + tweet.getUser().getScreenName() + " - " + tweet.getText());
+                    logger.debug(twitterAccount + ", Tweet ID: "+ tweetID.toString() + " @" + tweet.getUser().getScreenName());
                     if(tweetID.compareTo(tweetIDFromDB) == 0) {
                     	break;
                     } else {
                     	newTweets.add(tweet);
                     }
                 }
-            } while ((query = result.nextQuery()) != null);
+            //} while ((query = result.nextQuery()) != null);
         } catch (TwitterException te) {
             te.printStackTrace();
             logger.error("Class: updateLatestTweetID Method: getNewTweets(String twitterAccount)" + "Failed to search tweets: " + te.getMessage());
@@ -125,6 +132,7 @@ public class UserTimelineLatestTweet {
      * Get new tweets for the twitter accounts specified. The tweets are going to be from tweetIDFromDB to latest tweet.
      */
 	public List<Status> getNewTweets(ArrayList<Cuenta> twitterAccounts){
+		logger.debug("getNewTweets (ArrayList) method");
 		List<Status> newTweets = new ArrayList<Status>();
 		List<Status> tmpnewTweets = new ArrayList<Status>();
 		
@@ -133,8 +141,9 @@ public class UserTimelineLatestTweet {
 				// It isn't the first time for retrieving tweets
 				String tmpID = twitterAccount.getMaxId();
 				tmpnewTweets = getNewTweets(twitterAccount.getIdCuenta(), tmpID);
+				
 				for (Status tweet : tmpnewTweets) {
-                    logger.debug("getNewTweets(ArrayList<Cuenta> twitterAccounts)" + "@" + tweet.getUser().getScreenName() + " - " + tweet.getText());
+                    //logger.debug("getNewTweets(ArrayList<Cuenta> twitterAccounts)" + "@" + tweet.getUser().getScreenName() + " - " + tweet.getText());
                     newTweets.add(tweet);
                 }
 				
@@ -142,7 +151,7 @@ public class UserTimelineLatestTweet {
 				// It is the first time for retrieving tweets
 				tmpnewTweets = getNewTweets(twitterAccount.getIdCuenta());
 				for (Status tweet : tmpnewTweets) {
-                    logger.debug("getNewTweets(ArrayList<Cuenta> twitterAccounts)" + "@" + tweet.getUser().getScreenName() + " - " + tweet.getText());
+                    //logger.debug("getNewTweets(ArrayList<Cuenta> twitterAccounts)" + "@" + tweet.getUser().getScreenName() + " - " + tweet.getText());
                     newTweets.add(tweet);
                 }
 			}
@@ -155,6 +164,7 @@ public class UserTimelineLatestTweet {
      * Get latest tweet ID for the twitter account specified.
      */
 	public String getLatestTweetID(String twitterAccount) {
+		logger.debug("getLatestTweetID (String) method, twitterAccount: " + twitterAccount);
 		/*
 		String outTweetID = "";
 		
@@ -184,6 +194,32 @@ public class UserTimelineLatestTweet {
 		return accountsTweetId.get(twitterAccount);
 	}
     
+	public List<Status> getTweets(String twitterAccount){
+		logger.debug("getTweets (String) method");
+		List<Status> newTweets = new ArrayList<Status>();
+		Long tweetID = null;
+		
+        try {
+        	Twitter twitter = new TwitterFactory().getInstance();
+            Query query = new Query(twitterAccount);
+            QueryResult result;
+            do {
+                result = twitter.search(query);
+                List<Status> tweets = result.getTweets();
+                for (Status tweet : tweets) {
+                	tweetID = new Long(tweet.getId());
+                    //logger.debug("Tweet ID: "+ tweetID.toString() + "@" + tweet.getUser().getScreenName() + " - " + tweet.getText());
+                	logger.debug(twitterAccount + ", Tweet ID: "+ tweetID.toString() + " @" + tweet.getUser().getScreenName());
+                    newTweets.add(tweet);
+                }
+            } while ((query = result.nextQuery()) != null);
+        } catch (TwitterException te) {
+            te.printStackTrace();
+            logger.error("Class: updateLatestTweetID Method: getNewTweets(String twitterAccount)" + "Failed to search tweets: " + te.getMessage());
+        }
+		return newTweets;
+	}
+	
 	/**
      * @param args
      */

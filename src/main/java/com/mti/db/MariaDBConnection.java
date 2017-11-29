@@ -85,8 +85,16 @@ public class MariaDBConnection {
        return insert(updateQuery);
    }
    
+   public ResultSet getCuentas(String enabledFlag) throws SQLException{
+	   preparedStatement = connection.prepareStatement("SELECT * FROM CUENTAS WHERE ENABLED = ?");
+	   preparedStatement.setString(1, enabledFlag);
+       ResultSet res = preparedStatement.executeQuery();
+       return res;
+   }
+   
    public int updateCuenta(Cuenta cuenta) throws SQLException {
 	   
+	   //preparedStatement = connection.prepareStatement("UPDATE CUENTAS SET MAX_ID = ?, LAST_MODIFIED = NOW() WHERE ID_CUENTA = ?");
 	   preparedStatement = connection.prepareStatement("UPDATE CUENTAS SET MAX_ID = ? WHERE ID_CUENTA = ?");
 	   preparedStatement.setString(1, cuenta.getMaxId());
 	   preparedStatement.setString(2, cuenta.getIdCuenta());

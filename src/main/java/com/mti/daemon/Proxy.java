@@ -43,6 +43,7 @@ public class Proxy {
 	    		} catch (Exception e1) {
 	    			logger.error("Error executing the activity " + args[0] + ", " + e1.getMessage());
 	    			e1.printStackTrace();
+	    			
 	    		}
 	    	}
 	    }

@@ -47,7 +47,7 @@ public class MariaDBUtils {
 		try {
 			MariaDBConnection connection = new MariaDBConnection();
 			resultadoUpdate = connection.updateCuenta(cuenta);
-			logger.debug("Actualizando cuenta " + cuenta.getIdCuenta() + ", resultado: " + resultadoUpdate);
+			logger.debug("Actualizando cuenta " + cuenta.getIdCuenta() + ", maxId: " + cuenta.getMaxId() + ", resultado: " + resultadoUpdate);
 		} catch (ClassNotFoundException e) {
 			logger.error("Error getting class for DB " + e.getMessage());
 			e.printStackTrace();
@@ -70,11 +70,12 @@ public class MariaDBUtils {
 		
 		ArrayList <Cuenta> cuentas =new ArrayList<Cuenta>();
 		ResultSet resultSet = null; 
+
 		try {
 
 			MariaDBConnection connection = new MariaDBConnection();
 
-			resultSet = connection.query("SELECT * FROM CUENTAS");
+			resultSet = connection.getCuentas(ConstantUtils.ENABLED);
 
 			while(resultSet.next()) {
 
@@ -85,6 +86,7 @@ public class MariaDBUtils {
 				cuentaTemporal.setLongitud(resultSet.getString("longitud"));
 				cuentaTemporal.setUrl(resultSet.getString("url"));
 				cuentaTemporal.setMaxId(resultSet.getString("max_id"));
+				cuentaTemporal.setLastModified(resultSet.getTimestamp("last_modified"));
 
 				cuentas.add(cuentaTemporal);
 			}

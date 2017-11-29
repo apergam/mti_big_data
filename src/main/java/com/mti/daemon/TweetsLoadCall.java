@@ -7,7 +7,6 @@ import java.util.List;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.hbase.HBaseConfiguration;
-import org.apache.hadoop.hbase.MasterNotRunningException;
 import org.apache.hadoop.hbase.client.HBaseAdmin;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -33,7 +32,7 @@ public class TweetsLoadCall implements TweeterActivity {
 		HBaseUtils hBaseUtils = new HBaseUtils();
 		
 		UserTimelineLatestTweet userTimelineLatestTweet = new UserTimelineLatestTweet();
-		
+
 		Configuration config = null;
 		try {
 			config = getHBaseConfiguration();
@@ -49,17 +48,19 @@ public class TweetsLoadCall implements TweeterActivity {
 			
 			cuenta.setTweets(tweets);
 			
-			
 			maxId = userTimelineLatestTweet.getLatestTweetID(cuenta.getIdCuenta());
 			cuenta.setMaxId(maxId);
 			maria.updateMaxId(cuenta);
 			
+			logger.debug("Aqui deberia de insertar en hbase");
+
 			try {
 				hBaseUtils.putTweetsCuenta(config, cuenta, tweets);
 			} catch (IOException e) {
 				logger.error("Error inserting tweets in HBase " + e.getMessage());
 				e.printStackTrace();
 			}
+
 		}
 	}
 	

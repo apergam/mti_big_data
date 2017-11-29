@@ -1,6 +1,6 @@
 package com.mti.db;
 
-import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import twitter4j.Status;
@@ -14,6 +14,8 @@ public class Cuenta {
 	private String url;
 	private String maxId;
 	private List <Status> tweets;
+	private Date lastModified;
+	private String enabled;
 	
 	
 	public Cuenta() {
@@ -95,14 +97,28 @@ public class Cuenta {
 		this.maxId = maxId;
 	}
 	
-	
-
 	public List<Status> getTweets() {
 		return tweets;
 	}
 
 	public void setTweets(List<Status> tweets) {
 		this.tweets = tweets;
+	}
+	
+	public Date getLastModified() {
+		return lastModified;
+	}
+
+	public void setLastModified(Date lastModified) {
+		this.lastModified = lastModified;
+	}
+
+	public String getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(String enabled) {
+		this.enabled = enabled;
 	}
 
 	public String toString() {
