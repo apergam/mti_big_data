@@ -1,12 +1,21 @@
 package com.mti.twitter;
 
-import twitter4j.*;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import com.mti.db.*;
+
+import com.mti.db.Cuenta;
+import com.mti.db.MariaDBUtils;
+
+import twitter4j.Query;
+import twitter4j.QueryResult;
+import twitter4j.Status;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
 
 /**
  * @author Santo && Blue Demon
