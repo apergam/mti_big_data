@@ -1,11 +1,13 @@
 com\mti\twitter\UserTimelineLatestTweet.class
 com\mti\db\HBaseUtils2.class
 com\mti\db\Cuenta.class
+org\baeldung\hbase\HBaseClientOperations.class
 com\mti\db\MariaDBUtils.class
 com\mti\daemon\TweetsLoadCall.class
 com\mti\daemon\TweeterActivity.class
 com\mti\twitter\SearchTweets.class
 com\mti\db\ConstantUtils.class
+com\mti\twitter\Tuit.class
 com\mti\daemon\TweetsReportingCall.class
 com\mti\daemon\App.class
 com\mti\db\MariaDBConnection.class

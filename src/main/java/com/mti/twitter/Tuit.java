@@ -2,6 +2,10 @@ package com.mti.twitter;
 
 import java.util.Date;
 
+import org.joda.time.DateTime;
+
+import com.mti.db.Utils;
+
 public class Tuit {
 
     private long id = 0;
@@ -50,6 +54,85 @@ public class Tuit {
 		this.favoriteCount = favoriteCount;
 	}
 
+	public Tuit(String id, String text, String user, String createdAt, String hashtagEntities, String userMentionEntities,
+			String currentUserRetweetId, String latitud, String longitud, String inReplyToScreenName,
+			String inReplyToStatusId, String inReplyToUserId, String placeName, String quotedStatusId, String retweetCount,
+			String source, String favoriteCount) {
+		super();
+		
+		if(id == null || id == "") {
+			this.id = 0;
+		}else {
+			this.id = Long.valueOf(id);
+		}
+
+		this.text = text;
+		this.user = user;
+
+		if(Utils.isNullOrEmpty(createdAt)) {
+			this.createdAt = null;
+		}else {
+			this.createdAt = DateTime.parse(currentUserRetweetId).toDate();
+		}
+		
+		this.hashtagEntities = hashtagEntities;
+		this.userMentionEntities = userMentionEntities;
+		
+		if(Utils.isNullOrEmpty(currentUserRetweetId)) {
+			this.currentUserRetweetId = 0;
+		}else {
+			this.currentUserRetweetId = Long.valueOf(currentUserRetweetId);
+		}
+		
+		if(Utils.isNullOrEmpty(latitud)) {
+			this.latitud = 0;
+		}else {
+			this.latitud = Double.valueOf(latitud);
+		}
+		
+		if(Utils.isNullOrEmpty(longitud)){
+			this.longitud = 0;
+		}else {
+			this.longitud = Double.valueOf(longitud);
+		}
+		
+		this.inReplyToScreenName = inReplyToScreenName;
+		
+		if(Utils.isNullOrEmpty(inReplyToStatusId)) {
+			this.inReplyToStatusId = 0;
+		}else {
+			this.inReplyToStatusId = Long.valueOf(inReplyToStatusId);
+		}
+		
+		if(Utils.isNullOrEmpty(inReplyToUserId)) {
+			this.inReplyToStatusId = 0;
+		}else {
+			this.inReplyToStatusId = Long.valueOf(inReplyToStatusId);
+		}
+		
+		this.placeName = placeName;
+
+		if(Utils.isNullOrEmpty(quotedStatusId)) {
+			this.quotedStatusId = 0;
+		}else {
+			this.quotedStatusId = Long.valueOf(quotedStatusId);
+		}
+		
+		if(Utils.isNullOrEmpty(retweetCount)) {
+			this.retweetCount = 0;
+		}else {
+			this.retweetCount = Long.valueOf(retweetCount);
+		}
+		
+		this.source = source;
+		
+		if(Utils.isNullOrEmpty(favoriteCount)) {
+			this.favoriteCount = 0;
+		}else {
+			this.favoriteCount = Integer.valueOf(favoriteCount);
+		}
+	}
+	
 	public long getId() {
 		return id;
 	}
