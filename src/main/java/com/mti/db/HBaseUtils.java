@@ -146,6 +146,8 @@ public class HBaseUtils {
     		scan.addColumn(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_RETWEET_COUNT);
     		scan.addColumn(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_SOURCE);	
     		scan.addColumn(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_FAVORITE_COUNT);
+    		
+    		scan.setTimeRange(timestampInicial, timestampFinal);
 
     		try (ResultScanner scanner = table.getScanner(scan)) {
     			

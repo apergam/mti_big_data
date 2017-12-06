@@ -2,6 +2,7 @@ package com.mti.db;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.util.Bytes;
@@ -11,7 +12,7 @@ public class ConstantUtils {
 	public final static String ENABLED = "Y";
 	public final static String DISABLED = "N";
 	public final static int MAX_TXT_LENGTH_ON_TOSTRING = 50;
-	public final static DateFormat DATE_FORMAT = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z YYYY");
+	public final static DateFormat DATE_FORMAT = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z YYYY", Locale.US);
 	
 	//Table Names
 	public final static TableName TABLE_TWEETS = TableName.valueOf("TWEETS");
