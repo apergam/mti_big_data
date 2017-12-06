@@ -24,6 +24,11 @@ public class Utils {
 		return currentTime.toDate().getTime();
 	}
 	
+	public static long getCurrentTime() {
+		LocalDateTime currentTime = new LocalDateTime();
+		return currentTime.toDate().getTime();
+	}
+	
 	public static boolean isNullOrEmpty(String string) {
 		return string == null || string.isEmpty();
 	}

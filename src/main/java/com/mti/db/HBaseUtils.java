@@ -12,8 +12,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.client.Connection;
 import org.apache.hadoop.hbase.client.ConnectionFactory;
+import org.apache.hadoop.hbase.client.HBaseAdmin;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.ResultScanner;
@@ -22,6 +25,7 @@ import org.apache.hadoop.hbase.client.Table;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.google.protobuf.ServiceException;
 import com.mti.twitter.Tuit;
 
 import twitter4j.Status;
@@ -95,11 +99,29 @@ public class HBaseUtils {
     }
 
 
-    public void run(Configuration config) throws IOException {}
+    private void run(Configuration config) throws IOException {}
 
     
-    private ArrayList <Tuit> getTweetsBatchFromHBase(Configuration config, long timestampInicial, long timestampFinal) throws IOException {
+    public ArrayList <Tuit> getTweetsBatchFromHBase(Configuration config, long timestampInicial, long timestampFinal) throws IOException {
 
+    	String id = ""; 
+    	String text = ""; 
+    	String user = ""; 
+    	String createdAt = ""; 
+    	String hashtagEntities = ""; 
+    	String userMentionEntities = ""; 
+    	String currentUserRetweetId = ""; 
+    	String latitud = ""; 
+    	String longitud = ""; 
+    	String inReplyToScreenName = ""; 
+    	String inReplyToStatusId = ""; 
+    	String inReplyToUserId = ""; 
+    	String placeName = ""; 
+    	String quotedStatusId = ""; 
+    	String retweetCount = ""; 
+    	String source = ""; 
+    	String favoriteCount = ""; 
+    	
     	ArrayList<Tuit> tweetsFromHBase = new ArrayList<Tuit>();
     	
     	try (Connection connection = ConnectionFactory.createConnection(config)) {
@@ -129,8 +151,104 @@ public class HBaseUtils {
     			
     			for (Result result : scanner) {
     				
-    				logger.debug("Found row: " + result.getRow());
+    				logger.debug("Found row: " + new String(result.getRow()));
+    				   				
+    				if(result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_ID) != null ){
+    					id = new String(result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_ID));
+    				}
+
+    				if(result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_TEXT) != null ){
+    					text = new String(result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_TEXT));
+    				}
+
+    				if(result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_USER) != null ){
+    					user = new String(result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_USER));
+    				}
+
+    				if(result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_TIMESTAMP) != null ){
+    					createdAt = new String(result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_TIMESTAMP));
+    				}
+
+    				if(result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_HASHTAG_ENTITIES) != null ){
+    					hashtagEntities  = new String(result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_HASHTAG_ENTITIES));
+    				}
+    				 
+    				if(result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_USER_MENTION_ENTITIES) != null ){
+    					userMentionEntities = new String(result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_USER_MENTION_ENTITIES));
+    				}
+
+    				if(result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_CURRENT_USER_RETWEET_ID) != null ){
+    					currentUserRetweetId = new String(result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_CURRENT_USER_RETWEET_ID));
+    				}
+    				 
+    				if(result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_LATITUDE) != null ){
+    					latitud = new String(result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_LATITUDE));
+    				}
+
+    				if(result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_LONGITUDE) != null ){
+    					longitud = new String(result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_LONGITUDE));
+    				}
+    				 
+    				if(result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_IN_REPLY_TO_SCREEN_NAME) != null ){
+    					inReplyToScreenName = new String(result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_IN_REPLY_TO_SCREEN_NAME));
+    				}
+    				 
+    				if(result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_IN_REPLY_TO_STATUS_ID) != null ){
+    					inReplyToStatusId = new String(result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_IN_REPLY_TO_STATUS_ID));
+    				}
+
+    				if(result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_IN_REPLY_TO_USER_ID) != null ){
+    					inReplyToUserId = new String(result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_IN_REPLY_TO_USER_ID));
+    				}
+
+    				if(result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_PLACE) != null ){
+    					placeName = new String(result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_PLACE));
+    				}
+    				 
+    				if(result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_QUOTED_STATUS_ID) != null ){
+    					quotedStatusId = new String(result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_QUOTED_STATUS_ID));
+    				}
+    				 
+    				if(result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_RETWEET_COUNT) != null ){
+    					retweetCount = new String(result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_RETWEET_COUNT));
+    				}
+    				 
+    				if(result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_SOURCE) != null ){
+    					source = new String(result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_SOURCE));
+    				}
     				
+    				if(result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_FAVORITE_COUNT) != null ){
+    					favoriteCount = new String(result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_FAVORITE_COUNT));
+    				}
+
+    				Tuit tuit = new Tuit(
+    						id, text, user, createdAt, hashtagEntities, userMentionEntities, currentUserRetweetId, latitud, 
+    						longitud, inReplyToScreenName, inReplyToStatusId, inReplyToUserId, placeName, quotedStatusId, retweetCount,
+    						source, favoriteCount);
+    				
+    				logger.debug(tuit.toStringSimple());
+    				System.out.println(tuit.toStringSimple());
+    				
+    				/*
+    				System.out.println(ConstantUtils.QUALIFIER_ID + ": " + result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_ID));
+    				System.out.println(ConstantUtils.QUALIFIER_TEXT + ": " + result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_TEXT));
+    				System.out.println(ConstantUtils.QUALIFIER_USER + ": " + result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_USER));
+    				System.out.println(ConstantUtils.QUALIFIER_TIMESTAMP + ": " + result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_TIMESTAMP));
+    				System.out.println(ConstantUtils.QUALIFIER_HASHTAG_ENTITIES + ": " + result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_HASHTAG_ENTITIES)); 
+    				System.out.println(ConstantUtils.QUALIFIER_USER_MENTION_ENTITIES + ": " + result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_USER_MENTION_ENTITIES));
+    				System.out.println(ConstantUtils.QUALIFIER_CURRENT_USER_RETWEET_ID + ": " + result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_CURRENT_USER_RETWEET_ID)); 
+    				System.out.println(ConstantUtils.QUALIFIER_LATITUDE + ": " + result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_LATITUDE));
+    				System.out.println(ConstantUtils.QUALIFIER_LONGITUDE + ": " + result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_LONGITUDE)); 
+    				System.out.println(ConstantUtils.QUALIFIER_IN_REPLY_TO_SCREEN_NAME + ": " + result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_IN_REPLY_TO_SCREEN_NAME)); 
+    				System.out.println(ConstantUtils.QUALIFIER_IN_REPLY_TO_STATUS_ID + ": " + result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_IN_REPLY_TO_STATUS_ID));
+    				System.out.println(ConstantUtils.QUALIFIER_IN_REPLY_TO_USER_ID + ": " + result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_IN_REPLY_TO_USER_ID));
+    				System.out.println(ConstantUtils.QUALIFIER_PLACE + ": " + result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_PLACE)); 
+    				System.out.println(ConstantUtils.QUALIFIER_QUOTED_STATUS_ID + ": " + result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_QUOTED_STATUS_ID)); 
+    				System.out.println(ConstantUtils.QUALIFIER_RETWEET_COUNT + ": " + result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_RETWEET_COUNT)); 
+    				System.out.println(ConstantUtils.QUALIFIER_SOURCE + ": " + result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_SOURCE));
+    				System.out.println(ConstantUtils.QUALIFIER_FAVORITE_COUNT + ": " + result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_FAVORITE_COUNT));
+    				 */
+    				/*
     				Tuit tuit = new Tuit(
     						new String(result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_ID)),
     						new String(result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_TEXT)),
@@ -150,7 +268,7 @@ public class HBaseUtils {
     						new String(result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_SOURCE))	, 
     						new String(result.getValue(ConstantUtils.CF_TWEET_DATA.getBytes(), ConstantUtils.QUALIFIER_FAVORITE_COUNT))
     						);
-    				
+    				*/
     				tweetsFromHBase.add(tuit);
 
     			}
@@ -161,7 +279,25 @@ public class HBaseUtils {
     	return tweetsFromHBase;
     }
     
+    public static Configuration getHBaseConfiguration() throws IOException, ServiceException {
+        Configuration config = null;
+        String path = "";
 
+        //try {
+        	config = HBaseConfiguration.create();
+            path = HBaseUtils.class.getClass().getClassLoader().getResource("hbase-site.xml").getPath();
+
+            config.addResource(new Path(path));
+            
+            HBaseAdmin.checkHBaseAvailable(config);
+            /*
+        } catch (MasterNotRunningException e) {
+            System.out.println("HBase is not running." + e.getMessage());
+            logger.error("HBase is not running." + e.getMessage());
+        }
+        */
+		return config;
+    }
 
 /*    
     private void connect() throws IOException, ServiceException {

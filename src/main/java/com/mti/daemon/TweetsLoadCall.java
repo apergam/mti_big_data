@@ -3,20 +3,17 @@ package com.mti.daemon;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.client.HBaseAdmin;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import com.google.protobuf.ServiceException;
 import com.mti.db.Cuenta;
 import com.mti.db.HBaseUtils;
 import com.mti.db.MariaDBUtils;
 import com.mti.twitter.UserTimelineLatestTweet;
-
 import twitter4j.Status;
 
 public class TweetsLoadCall implements TweeterActivity {
@@ -64,23 +61,19 @@ public class TweetsLoadCall implements TweeterActivity {
 		}
 	}
 	
+
 	private Configuration getHBaseConfiguration() throws IOException, ServiceException {
         Configuration config = null;
         String path = "";
 
-        //try {
         	config = HBaseConfiguration.create();
             path = this.getClass().getClassLoader().getResource("hbase-site.xml").getPath();
 
             config.addResource(new Path(path));
             
             HBaseAdmin.checkHBaseAvailable(config);
-            /*
-        } catch (MasterNotRunningException e) {
-            System.out.println("HBase is not running." + e.getMessage());
-            logger.error("HBase is not running." + e.getMessage());
-        }
-        */
+
 		return config;
     }
+
 }

@@ -1,5 +1,8 @@
 package com.mti.db;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.util.Bytes;
 
@@ -7,6 +10,8 @@ public class ConstantUtils {
 
 	public final static String ENABLED = "Y";
 	public final static String DISABLED = "N";
+	public final static int MAX_TXT_LENGTH_ON_TOSTRING = 50;
+	public final static DateFormat DATE_FORMAT = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z YYYY");
 	
 	//Table Names
 	public final static TableName TABLE_TWEETS = TableName.valueOf("TWEETS");
@@ -35,7 +40,5 @@ public class ConstantUtils {
     public final static byte[] QUALIFIER_SOURCE = Bytes.toBytes("source");
     public final static byte[] QUALIFIER_USER_MENTION_ENTITIES = Bytes.toBytes("user_mention_entities");
     public final static byte[] QUALIFIER_FAVORITE_COUNT = Bytes.toBytes("favorite_count");
-    
         
-    
 }

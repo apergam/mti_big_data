@@ -32,7 +32,7 @@ public class HbaseClientExample {
         }
 
         HBaseUtils HBaseClientOperations = new HBaseUtils();
-        HBaseClientOperations.run(config);
+        //HBaseClientOperations.run(config);
     }
 
 }

@@ -1,12 +1,20 @@
 package com.mti.twitter;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 
+import com.mti.db.ConstantUtils;
 import com.mti.db.Utils;
 
 public class Tuit {
+	
+	private static final Logger logger = LogManager.getLogger();
 
     private long id = 0;
     private String text = "";
@@ -26,6 +34,8 @@ public class Tuit {
     private String source = "";
     private int favoriteCount = 0;
     
+    
+    DateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z YYYY");
 	public Tuit() {
 		
 	}
@@ -72,7 +82,13 @@ public class Tuit {
 		if(Utils.isNullOrEmpty(createdAt)) {
 			this.createdAt = null;
 		}else {
-			this.createdAt = DateTime.parse(currentUserRetweetId).toDate();
+			
+			try {
+				this.createdAt = ConstantUtils.DATE_FORMAT.parse(createdAt);	
+			} catch (ParseException e) {
+				logger.error("Error parsing tuit date " + createdAt + ". " + e.getMessage());
+				e.printStackTrace();
+			}
 		}
 		
 		this.hashtagEntities = hashtagEntities;
@@ -301,5 +317,71 @@ public class Tuit {
 	public void setFavoriteCount(int favoriteCount) {
 		this.favoriteCount = favoriteCount;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Tuit [id=");
+		builder.append(id);
+		builder.append(", text=");
+		builder.append(text);
+		builder.append(", user=");
+		builder.append(user);
+		builder.append(", createdAt=");
+		builder.append(createdAt);
+		builder.append(", hashtagEntities=");
+		builder.append(hashtagEntities);
+		builder.append(", userMentionEntities=");
+		builder.append(userMentionEntities);
+		builder.append(", currentUserRetweetId=");
+		builder.append(currentUserRetweetId);
+		builder.append(", latitud=");
+		builder.append(latitud);
+		builder.append(", longitud=");
+		builder.append(longitud);
+		builder.append(", inReplyToScreenName=");
+		builder.append(inReplyToScreenName);
+		builder.append(", inReplyToStatusId=");
+		builder.append(inReplyToStatusId);
+		builder.append(", inReplyToUserId=");
+		builder.append(inReplyToUserId);
+		builder.append(", placeName=");
+		builder.append(placeName);
+		builder.append(", quotedStatusId=");
+		builder.append(quotedStatusId);
+		builder.append(", retweetCount=");
+		builder.append(retweetCount);
+		builder.append(", source=");
+		builder.append(source);
+		builder.append(", favoriteCount=");
+		builder.append(favoriteCount);
+		builder.append("]");
+		
+		return builder.toString();
+	}
+	
+	public String toStringSimple() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Tuit [id=");
+		builder.append(id);
+		builder.append(", text=");
+		if(text.length() <= ConstantUtils.MAX_TXT_LENGTH_ON_TOSTRING) {
+			builder.append(text);
+		}else {
+			builder.append(text.substring(0, 50));	
+		}
+		
+		builder.append("...");
+		builder.append(", user=");
+		builder.append(user);
+		builder.append(", createdAt=");
+		builder.append(createdAt);
+		builder.append(", hashtagEntities=");
+		builder.append(hashtagEntities);
+		builder.append("]");
+		
+		return builder.toString();
+	}
+	
 
 }
